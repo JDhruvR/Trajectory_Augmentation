@@ -1,4 +1,4 @@
-# Your Project Name
+# Trajectory_Augmentation
 
 - **Problem Statement Number** - 01
 - **Problem Statement Title** - *Build a Vision-Language-Action Robotic System for Natural Language Object Manipulation*
