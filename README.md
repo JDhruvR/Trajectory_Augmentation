@@ -1,10 +1,10 @@
 # Your Project Name
 
-- **Problem Statement Number** - 
-- **Problem Statement Title** - *(Must exactly match one of the 11 Samsung EnnovateX AX Hackathon Problem Statements)*
-- **Team name** - *(Same as Phase 1 Team name)*
-- **Team members (Names)** - *Member 1 Name*, *Member 2 Name*
-- **Institute/College Name** - *Name*, *Campus Name & Address (In case the institute has multiple campuses)*
+- **Problem Statement Number** - 01
+- **Problem Statement Title** - *Build a Vision-Language-Action Robotic System for Natural Language Object Manipulation*
+- **Team name** - *Mode_Expand*
+- **Team members (Names)** - *Dhruv Ramesh Joshi*, *Sai Venkata Sohith Gutta*
+- **Institute/College Name** - *International Institute of Information Technology Bangalore (IIIT B)*, *26/C, Hosur Rd, Electronic City Phase I, Electronic City, Konappana Agrahara, Karnataka 560100*
 - **Final Presentation Google Drive Link** - *Upload the PDF presentation for your final submission on Google Drive (It should be openly accessible and not behind any login wall)*
 - **Full Submission Demo Video Link** - *(Upload the Demo video on Youtube as a public or unlisted video and share the link. Google Drive uploads for video is not allowed.)*
 - **Setup & Result Reproducibility Video Link** - *(Upload the Demo video on Youtube as a public or unlisted video and share the link. Google Drive uploads for video is not allowed.)*
