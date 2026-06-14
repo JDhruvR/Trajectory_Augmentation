@@ -30,6 +30,7 @@ from typing import Dict, Tuple
 # CONFIGURATION
 # ============================================================================
 
+DEMO_PATH = Path("/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets/libero_goal/open_the_middle_drawer_of_the_cabinet_demo.hdf5")
 OUTPUT_DIR = Path("/home/dhruv/Trajectory_Augmentation/report_mds")
 OUTPUT_DIR.mkdir(exist_ok=True, parents=True)
 
@@ -40,49 +41,26 @@ print(f"Output directory: {OUTPUT_DIR}")
 # DATA LOADING
 # ============================================================================
 
-def load_tfds_episode(dataset_name: str = 'libero_object_no_noops',
-                      episode_idx: int = 0) -> Dict:
-    """
-    Load a LIBERO episode from TensorFlow Datasets
-    """
-    
-    dataset = tfds.load(
-        dataset_name,
-        split='train',
-        shuffle_files=False,
-    )
-    
-    # Convert to list and get specific episode
-    episodes = list(dataset)
-    
-    if episode_idx >= len(episodes):
-        raise ValueError(f"Episode {episode_idx} not found (only {len(episodes)} available)")
-    
-    episode = episodes[episode_idx]
-    return episode
+import h5py
 
-
-def extract_tfds_trajectory(episode: Dict) -> Dict:
-    """
-    Extract state and action sequences from TFDS episode
-    """
-    
-    steps = episode['steps']
-    
-    # Extract 8D EEF state
-    states = steps['observation']['state']  # (T, 8)
-    
-    # Extract 7D actions
-    actions = steps['action']  # (T, 7)
-    
-    # Language instruction
-    instruction = episode['language_instruction'].decode('utf-8')
-    
+def load_hdf5_trajectory(filepath: str, demo_idx: int = 0) -> Dict:
+    """Load trajectory from HDF5 demo file"""
+    with h5py.File(filepath, 'r') as f:
+        demo_key = f"data/demo_{demo_idx}"
+        
+        # 8D state is ee_pos (3) + ee_ori (3) + gripper_states (2)
+        ee_pos = f[f"{demo_key}/obs/ee_pos"][:]
+        ee_ori = f[f"{demo_key}/obs/ee_ori"][:]
+        gripper_states = f[f"{demo_key}/obs/gripper_states"][:]
+        
+        states = np.concatenate([ee_pos, ee_ori, gripper_states], axis=-1)
+        actions = f[f"{demo_key}/actions"][:]
+        
     return {
-        'states': states.numpy(),
-        'actions': actions.numpy(),
-        'instruction': instruction,
+        'states': states,
+        'actions': actions,
         'length': len(states),
+        'instruction': "open the middle drawer of the cabinet",
     }
 
 
@@ -93,6 +71,16 @@ def extract_tfds_trajectory(episode: Dict) -> Dict:
 def test_inverse_action_static(states: np.ndarray, actions: np.ndarray) -> Dict:
     """
     Test inverse action reversibility using static method
+    
+    Assumes: s_{t+1} = s_t + a_t (linear approximation)
+    Therefore: s_t_hat = s_{t+1} - a_t
+    
+    Args:
+        states: (T, 8) array of EEF states
+        actions: (T-1, 7) or (T, 7) array of actions
+    
+    Returns:
+        results: Dict with per-step results and statistics
     """
     
     # Adjust action length if needed
@@ -104,29 +92,32 @@ def test_inverse_action_static(states: np.ndarray, actions: np.ndarray) -> Dict:
     
     # Storage for results
     results = {
-        's1': [],
-        'a1': [],
-        's2': [],
-        's1_reconstructed': [],
-        'error': [],
-        'error_pos': [],
-        'error_ori': [],
-        'error_grip': [],
+        's1': [],  # Initial state (8D)
+        'a1': [],  # Action (7D)
+        's2': [],  # State after action (observed)
+        's1_reconstructed': [],  # Reconstructed state using static method (8D)
+        'error': [],  # L2 error: ‖s1 - s1_reconstructed‖
+        'error_pos': [],  # Position component error
+        'error_ori': [],  # Orientation component error
+        'error_grip': [],  # Gripper component error
     }
     
-    print(f"\\nTesting static inverse actions for {num_steps} steps...")
+    print(f"\nTesting static inverse actions for {num_steps} steps...")
     
     # Test each step
     for step in range(num_steps):
         
         # Extract data
-        s1 = states[step]
-        a1 = actions[step]
-        s2 = states[step + 1]
+        s1 = states[step]  # Initial state (8D)
+        a1 = actions[step]  # Action (7D)
+        s2 = states[step + 1]  # Observed next state (8D)
+        
+        # Pad action to 8D (duplicate gripper command)
+        a1_padded = np.concatenate([a1[:6], [a1[6], a1[6]]])
         
         # Static inverse: Assume s1 + a1 ≈ s2
         # Therefore: s1_hat = s2 - a1
-        s1_reconstructed = s2 - a1
+        s1_reconstructed = s2 - a1_padded  # (8,)
         
         # Compute total error
         total_error = np.linalg.norm(s1 - s1_reconstructed)
@@ -207,46 +198,46 @@ def save_results_to_file(results: Dict, stats: Dict, output_dir: Path,
     # Per-step results
     results_file = output_dir / f"{prefix}_eef8.txt"
     with open(results_file, 'w') as f:
-        f.write("Step-by-step static inverse action test results\\n")
-        f.write("=" * 100 + "\\n\\n")
-        f.write("Method: s1_hat = s2 - a1 (assumes linear state transition)\\n")
-        f.write("Format: step | ‖s1‖ | ‖error‖ | ‖Δpos‖ | ‖Δori‖ | ‖Δgrip‖\\n")
-        f.write("-" * 100 + "\\n")
+        f.write("Step-by-step static inverse action test results\n")
+        f.write("=" * 100 + "\n\n")
+        f.write("Method: s1_hat = s2 - a1 (assumes linear state transition)\n")
+        f.write("Format: step | ‖s1‖ | ‖error‖ | ‖Δpos‖ | ‖Δori‖ | ‖Δgrip‖\n")
+        f.write("-" * 100 + "\n")
         
         for step in range(len(results['error'])):
             s1_norm = np.linalg.norm(results['s1'][step])
             f.write(f"{step:3d} | {s1_norm:.6f} | {results['error'][step]:.6f} | "
                    f"{results['error_pos'][step]:.6f} | {results['error_ori'][step]:.6f} | "
-                   f"{results['error_grip'][step]:.6f}\\n")
+                   f"{results['error_grip'][step]:.6f}\n")
     
     print(f"✓ Saved per-step results to: {results_file}")
     
     # Statistics
     stats_file = output_dir / f"{prefix}_eef8_stats.txt"
     with open(stats_file, 'w') as f:
-        f.write("Static Inverse Action Test - Statistics\\n")
-        f.write("=" * 80 + "\\n\\n")
-        f.write("Method: s1_hat = s2 - a1\\n")
-        f.write("Assumption: Linear state transition (s1 + a1 = s2)\\n\\n")
-        f.write(f"Number of steps tested: {stats['num_steps']}\\n")
-        f.write(f"Mean ‖s1‖: {stats['mean_s1_norm']:.6f} m\\n")
-        f.write(f"Std ‖s1‖: {stats['std_s1_norm']:.6f} m\\n\\n")
-        f.write(f"Mean ‖error‖: {stats['mean_error']:.6f} m\\n")
-        f.write(f"Std ‖error‖: {stats['std_error']:.6f} m\\n")
-        f.write(f"Median ‖error‖: {stats['median_error']:.6f} m\\n")
-        f.write(f"Max ‖error‖: {stats['max_error']:.6f} m\\n")
-        f.write(f"Min ‖error‖: {stats['min_error']:.6f} m\\n")
-        f.write(f"95th percentile: {stats['percentile_95']:.6f} m\\n")
-        f.write(f"99th percentile: {stats['percentile_99']:.6f} m\\n\\n")
-        f.write(f"Error as % of state norm: {stats['error_as_pct']:.2f}%\\n\\n")
-        f.write("Component errors:\\n")
-        f.write(f"  Position: {stats['error_pos_mean']:.6f} m\\n")
-        f.write(f"  Orientation: {stats['error_ori_mean']:.6f} rad\\n")
-        f.write(f"  Gripper: {stats['error_grip_mean']:.6f}\\n\\n")
-        f.write("INTERPRETATION:\\n")
-        f.write("- Error ~19% of state norm indicates the linear assumption is violated\\n")
-        f.write("- Robot dynamics are non-linear; physics simulation needed for better accuracy\\n")
-        f.write("- Static method unsuitable for trajectory perturbations\\n")
+        f.write("Static Inverse Action Test - Statistics\n")
+        f.write("=" * 80 + "\n\n")
+        f.write("Method: s1_hat = s2 - a1\n")
+        f.write("Assumption: Linear state transition (s1 + a1 = s2)\n\n")
+        f.write(f"Number of steps tested: {stats['num_steps']}\n")
+        f.write(f"Mean ‖s1‖: {stats['mean_s1_norm']:.6f} m\n")
+        f.write(f"Std ‖s1‖: {stats['std_s1_norm']:.6f} m\n\n")
+        f.write(f"Mean ‖error‖: {stats['mean_error']:.6f} m\n")
+        f.write(f"Std ‖error‖: {stats['std_error']:.6f} m\n")
+        f.write(f"Median ‖error‖: {stats['median_error']:.6f} m\n")
+        f.write(f"Max ‖error‖: {stats['max_error']:.6f} m\n")
+        f.write(f"Min ‖error‖: {stats['min_error']:.6f} m\n")
+        f.write(f"95th percentile: {stats['percentile_95']:.6f} m\n")
+        f.write(f"99th percentile: {stats['percentile_99']:.6f} m\n\n")
+        f.write(f"Error as % of state norm: {stats['error_as_pct']:.2f}%\n\n")
+        f.write("Component errors:\n")
+        f.write(f"  Position: {stats['error_pos_mean']:.6f} m\n")
+        f.write(f"  Orientation: {stats['error_ori_mean']:.6f} rad\n")
+        f.write(f"  Gripper: {stats['error_grip_mean']:.6f}\n\n")
+        f.write("INTERPRETATION:\n")
+        f.write("- Error ~19% of state norm indicates the linear assumption is violated\n")
+        f.write("- Robot dynamics are non-linear; physics simulation needed for better accuracy\n")
+        f.write("- Static method unsuitable for trajectory perturbations\n")
     
     print(f"✓ Saved statistics to: {stats_file}")
     
@@ -346,14 +337,13 @@ def main():
                        help="TFDS dataset name (default: libero_object_no_noops)")
     args = parser.parse_args()
     
-    print("\\n" + "=" * 80)
+    print("\n" + "=" * 80)
     print("LIBERO INVERSE ACTION TEST - STATIC METHOD (BASELINE)")
     print("=" * 80)
     
     # Load episode
-    print(f"\\nLoading episode {args.episode_idx} from {args.dataset}...")
-    episode = load_tfds_episode(args.dataset, episode_idx=args.episode_idx)
-    trajectory = extract_tfds_trajectory(episode)
+    print(f"\nLoading demo {args.episode_idx} from {DEMO_PATH.name}...")
+    trajectory = load_hdf5_trajectory(str(DEMO_PATH), demo_idx=args.episode_idx)
     
     print(f"  Instruction: {trajectory['instruction']}")
     print(f"  Trajectory length: {trajectory['length']} steps")
@@ -367,31 +357,31 @@ def main():
     stats = compute_statistics(results)
     
     # Print summary
-    print("\\n" + "=" * 80)
+    print("\n" + "=" * 80)
     print("RESULTS SUMMARY")
     print("=" * 80)
-    print(f"\\nNumber of steps tested: {stats['num_steps']}")
+    print(f"\nNumber of steps tested: {stats['num_steps']}")
     print(f"Mean state norm ‖s1‖: {stats['mean_s1_norm']:.4f} m")
     print(f"Mean error ‖s1 - s1_hat‖: {stats['mean_error']:.6f} m")
     print(f"Std dev error: {stats['std_error']:.6f} m")
     print(f"Error as % of state norm: {stats['error_as_pct']:.2f}%")
-    print(f"\\nComponent errors:")
+    print(f"\nComponent errors:")
     print(f"  Position: {stats['error_pos_mean']:.6f} m")
     print(f"  Orientation: {stats['error_ori_mean']:.6f} rad")
     print(f"  Gripper: {stats['error_grip_mean']:.6f}")
     
-    print("\\n⚠  WARNING: Static method error is ~{:.1f}× larger than simulator method!".format(
+    print("\n⚠  WARNING: Static method error is ~{:.1f}× larger than simulator method!".format(
         stats['mean_error'] / 0.060  # Approximate simulator error
     ))
     print("   This ~19% error is unsuitable for trajectory perturbations.")
     
     # Save results
-    print("\\nSaving results...")
+    print("\nSaving results...")
     save_results_to_file(results, stats, OUTPUT_DIR,
                         prefix="libero_inverse_action_static")
     plot_trajectory_recovery_static(results, OUTPUT_DIR)
     
-    print("\\n" + "=" * 80)
+    print("\n" + "=" * 80)
     print("✓ TEST COMPLETE")
     print("=" * 80)
 

@@ -32,7 +32,7 @@ from robosuite.utils.transform_utils import quat2axisangle, axisangle2quat
 # ============================================================================
 
 LIBERO_REPO = Path("/home/dhruv/Trajectory_Augmentation/third_party/LIBERO")
-DEMO_PATH = Path("/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets/libero_object/pick_up_the_tomato_sauce_and_place_it_in_the_basket_demo.hdf5")
+DEMO_PATH = Path("/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets/libero_goal/open_the_middle_drawer_of_the_cabinet_demo.hdf5")
 OUTPUT_DIR = Path("/home/dhruv/Trajectory_Augmentation/report_mds")
 
 OUTPUT_DIR.mkdir(exist_ok=True, parents=True)
@@ -112,13 +112,10 @@ def extract_eef_state(env) -> np.ndarray:
     return eef_state  # (8,)
 
 
-def reset_to_state(env, target_state_110d: np.ndarray) -> None:
-    """Reset environment to a specific 110D MuJoCo state"""
+def reset_to_state(env, target_state: np.ndarray) -> None:
+    """Reset environment to a specific MuJoCo state (usually 79D or 110D)"""
     sim = env.sim
-    nq = sim.model.nq
-    nv = sim.model.nv
-    sim.data.qpos[:] = target_state_110d[:nq]
-    sim.data.qvel[:] = target_state_110d[nq:nq+nv]
+    sim.set_state_from_flattened(target_state)
     sim.forward()
 
 
@@ -127,7 +124,7 @@ def load_hdf5_trajectory(filepath: str, demo_idx: int = 0) -> Dict:
     with h5py.File(filepath, 'r') as f:
         demo_key = f"data/demo_{demo_idx}"
         
-        states_110d = f[f"{demo_key}/states"][:]
+        states = f[f"{demo_key}/states"][:]
         actions = f[f"{demo_key}/actions"][:]
         
         ee_pos = f[f"{demo_key}/obs/ee_pos"][:]
@@ -135,7 +132,7 @@ def load_hdf5_trajectory(filepath: str, demo_idx: int = 0) -> Dict:
         gripper_states = f[f"{demo_key}/obs/gripper_states"][:]
     
     return {
-        'states_110d': states_110d,
+        'states_110d': states,
         'actions': actions,
         'ee_pos': ee_pos,
         'ee_ori': ee_ori,
@@ -143,15 +140,34 @@ def load_hdf5_trajectory(filepath: str, demo_idx: int = 0) -> Dict:
     }
 
 
-def create_environment():
-    """Create robosuite environment for testing"""
+def create_environment(demo_path: str):
+    """Create robosuite environment using metadata from the demo file"""
+    import json
+    import h5py
+    import os
+    import sys
+    
+    if str(LIBERO_REPO) not in sys.path:
+        sys.path.insert(0, str(LIBERO_REPO))
+        
+    import libero.libero.envs  # registers the libero envs
+
+    with h5py.File(demo_path, 'r') as f:
+        env_args = json.loads(f['data'].attrs['env_args'])
+    
+    # Construct BDDL path manually
+    task_name = Path(demo_path).stem.replace("_demo", "")
+    dataset_type = demo_path.split("/")[-2]  # e.g., libero_goal
+    bddl_path = str(LIBERO_REPO / "libero" / "libero" / "bddl_files" / dataset_type / f"{task_name}.bddl")
+    
     env = suite.make(
-        env_name="PickPlaceBread",
-        robots="Panda",
+        env_name="Libero_Tabletop_Manipulation",
+        bddl_file_name=bddl_path,
+        robots=env_args["env_kwargs"].get("robots", ["Panda"]),
         has_renderer=False,
         has_offscreen_renderer=False,
         use_camera_obs=False,
-        control_freq=20,
+        control_freq=env_args["env_kwargs"].get("control_freq", 20),
         horizon=200,
     )
     return env
@@ -277,7 +293,7 @@ def test_batch(demo_start: int = 1, demo_end: int = 20, num_steps: int = 50) -> 
     print(f"Testing demos {demo_start} to {demo_end}...")
     print(f"Steps per demo: {num_steps}\\n")
     
-    env = create_environment()
+    env = create_environment(str(DEMO_PATH))
     
     batch_results = {
         'demo_indices': [],
