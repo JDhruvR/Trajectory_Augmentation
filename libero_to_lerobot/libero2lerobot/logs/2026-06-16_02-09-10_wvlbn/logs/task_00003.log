@@ -1,0 +1,4 @@
+2026-06-16 02:09:14.053 | INFO     | datatrove.utils.logging:add_task_logger:76 - Launching pipeline for rank=3
+2026-06-16 02:09:14.053 | INFO     | datatrove.utils.logging:log_pipeline:108 - 
+--- 🛠️ PIPELINE 🛠
+libero2lerobot: Save Temp LeRobotDataset

@@ -1,0 +1,101 @@
+{
+    "pipeline": [
+        {
+            "tasks": [
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_object/pick_up_the_butter_and_place_it_in_the_basket_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_object_augmented_temp/libero_object/pick_up_the_butter_and_place_it_in_the_basket_demo",
+                    "local_repo_id": "libero_object/pick_up_the_butter_and_place_it_in_the_basket_demo.hdf5",
+                    "metadata": {
+                        "task": "pick up the butter and place it in the basket"
+                    }
+                },
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_object_augmented_temp/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket_demo",
+                    "local_repo_id": "libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket_demo.hdf5",
+                    "metadata": {
+                        "task": "pick up the alphabet soup and place it in the basket"
+                    }
+                },
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_object/pick_up_the_salad_dressing_and_place_it_in_the_basket_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_object_augmented_temp/libero_object/pick_up_the_salad_dressing_and_place_it_in_the_basket_demo",
+                    "local_repo_id": "libero_object/pick_up_the_salad_dressing_and_place_it_in_the_basket_demo.hdf5",
+                    "metadata": {
+                        "task": "pick up the salad dressing and place it in the basket"
+                    }
+                },
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_object/pick_up_the_orange_juice_and_place_it_in_the_basket_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_object_augmented_temp/libero_object/pick_up_the_orange_juice_and_place_it_in_the_basket_demo",
+                    "local_repo_id": "libero_object/pick_up_the_orange_juice_and_place_it_in_the_basket_demo.hdf5",
+                    "metadata": {
+                        "task": "pick up the orange juice and place it in the basket"
+                    }
+                },
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_object/pick_up_the_milk_and_place_it_in_the_basket_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_object_augmented_temp/libero_object/pick_up_the_milk_and_place_it_in_the_basket_demo",
+                    "local_repo_id": "libero_object/pick_up_the_milk_and_place_it_in_the_basket_demo.hdf5",
+                    "metadata": {
+                        "task": "pick up the milk and place it in the basket"
+                    }
+                },
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_object/pick_up_the_cream_cheese_and_place_it_in_the_basket_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_object_augmented_temp/libero_object/pick_up_the_cream_cheese_and_place_it_in_the_basket_demo",
+                    "local_repo_id": "libero_object/pick_up_the_cream_cheese_and_place_it_in_the_basket_demo.hdf5",
+                    "metadata": {
+                        "task": "pick up the cream cheese and place it in the basket"
+                    }
+                },
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_object/pick_up_the_chocolate_pudding_and_place_it_in_the_basket_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_object_augmented_temp/libero_object/pick_up_the_chocolate_pudding_and_place_it_in_the_basket_demo",
+                    "local_repo_id": "libero_object/pick_up_the_chocolate_pudding_and_place_it_in_the_basket_demo.hdf5",
+                    "metadata": {
+                        "task": "pick up the chocolate pudding and place it in the basket"
+                    }
+                },
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_object/pick_up_the_tomato_sauce_and_place_it_in_the_basket_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_object_augmented_temp/libero_object/pick_up_the_tomato_sauce_and_place_it_in_the_basket_demo",
+                    "local_repo_id": "libero_object/pick_up_the_tomato_sauce_and_place_it_in_the_basket_demo.hdf5",
+                    "metadata": {
+                        "task": "pick up the tomato sauce and place it in the basket"
+                    }
+                },
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_object/pick_up_the_ketchup_and_place_it_in_the_basket_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_object_augmented_temp/libero_object/pick_up_the_ketchup_and_place_it_in_the_basket_demo",
+                    "local_repo_id": "libero_object/pick_up_the_ketchup_and_place_it_in_the_basket_demo.hdf5",
+                    "metadata": {
+                        "task": "pick up the ketchup and place it in the basket"
+                    }
+                },
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_object/pick_up_the_bbq_sauce_and_place_it_in_the_basket_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_object_augmented_temp/libero_object/pick_up_the_bbq_sauce_and_place_it_in_the_basket_demo",
+                    "local_repo_id": "libero_object/pick_up_the_bbq_sauce_and_place_it_in_the_basket_demo.hdf5",
+                    "metadata": {
+                        "task": "pick up the bbq sauce and place it in the basket"
+                    }
+                }
+            ],
+            "adapter": "<__main__.LiberoAdapter object at 0x73a520d934c0>",
+            "type": "libero2lerobot"
+        }
+    ],
+    "logging_dir": "DataFolder(path='/home/dhruv/Trajectory_Augmentation/libero2lerobot/logs/2026-06-16_02-09-10_wvlbn', fs=<fsspec.implementations.local.LocalFileSystem object at 0x73a520dc7280>)",
+    "skip_completed": true,
+    "randomize_start_duration": 0,
+    "tasks": 10,
+    "workers": 10,
+    "start_method": "forkserver",
+    "local_tasks": 10,
+    "local_rank_offset": 0,
+    "depends": null,
+    "_launched": true,
+    "world_size": 10
+}

@@ -1,0 +1,101 @@
+{
+    "pipeline": [
+        {
+            "tasks": [
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_goal/put_the_bowl_on_top_of_the_cabinet_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_goal_augmented_temp/libero_goal/put_the_bowl_on_top_of_the_cabinet_demo",
+                    "local_repo_id": "libero_goal/put_the_bowl_on_top_of_the_cabinet_demo.hdf5",
+                    "metadata": {
+                        "task": "put the bowl on top of the cabinet"
+                    }
+                },
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_goal/put_the_wine_bottle_on_the_rack_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_goal_augmented_temp/libero_goal/put_the_wine_bottle_on_the_rack_demo",
+                    "local_repo_id": "libero_goal/put_the_wine_bottle_on_the_rack_demo.hdf5",
+                    "metadata": {
+                        "task": "put the wine bottle on the rack"
+                    }
+                },
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_goal/turn_on_the_stove_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_goal_augmented_temp/libero_goal/turn_on_the_stove_demo",
+                    "local_repo_id": "libero_goal/turn_on_the_stove_demo.hdf5",
+                    "metadata": {
+                        "task": "turn on the stove"
+                    }
+                },
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_goal/put_the_bowl_on_the_stove_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_goal_augmented_temp/libero_goal/put_the_bowl_on_the_stove_demo",
+                    "local_repo_id": "libero_goal/put_the_bowl_on_the_stove_demo.hdf5",
+                    "metadata": {
+                        "task": "put the bowl on the stove"
+                    }
+                },
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_goal/put_the_wine_bottle_on_top_of_the_cabinet_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_goal_augmented_temp/libero_goal/put_the_wine_bottle_on_top_of_the_cabinet_demo",
+                    "local_repo_id": "libero_goal/put_the_wine_bottle_on_top_of_the_cabinet_demo.hdf5",
+                    "metadata": {
+                        "task": "put the wine bottle on top of the cabinet"
+                    }
+                },
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_goal/open_the_top_drawer_and_put_the_bowl_inside_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_goal_augmented_temp/libero_goal/open_the_top_drawer_and_put_the_bowl_inside_demo",
+                    "local_repo_id": "libero_goal/open_the_top_drawer_and_put_the_bowl_inside_demo.hdf5",
+                    "metadata": {
+                        "task": "open the top drawer and put the bowl inside"
+                    }
+                },
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_goal/open_the_middle_drawer_of_the_cabinet_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_goal_augmented_temp/libero_goal/open_the_middle_drawer_of_the_cabinet_demo",
+                    "local_repo_id": "libero_goal/open_the_middle_drawer_of_the_cabinet_demo.hdf5",
+                    "metadata": {
+                        "task": "open the middle drawer of the cabinet"
+                    }
+                },
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_goal/push_the_plate_to_the_front_of_the_stove_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_goal_augmented_temp/libero_goal/push_the_plate_to_the_front_of_the_stove_demo",
+                    "local_repo_id": "libero_goal/push_the_plate_to_the_front_of_the_stove_demo.hdf5",
+                    "metadata": {
+                        "task": "push the plate to the front of the stove"
+                    }
+                },
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_goal/put_the_cream_cheese_in_the_bowl_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_goal_augmented_temp/libero_goal/put_the_cream_cheese_in_the_bowl_demo",
+                    "local_repo_id": "libero_goal/put_the_cream_cheese_in_the_bowl_demo.hdf5",
+                    "metadata": {
+                        "task": "put the cream cheese in the bowl"
+                    }
+                },
+                {
+                    "input_path": "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_goal/put_the_bowl_on_the_plate_demo.hdf5",
+                    "output_path": "/home/dhruv/Trajectory_Augmentation/data/lerobot_format/libero_goal_augmented_temp/libero_goal/put_the_bowl_on_the_plate_demo",
+                    "local_repo_id": "libero_goal/put_the_bowl_on_the_plate_demo.hdf5",
+                    "metadata": {
+                        "task": "put the bowl on the plate"
+                    }
+                }
+            ],
+            "adapter": "<__main__.LiberoAdapter object at 0x733b11797460>",
+            "type": "libero2lerobot"
+        }
+    ],
+    "logging_dir": "DataFolder(path='/home/dhruv/Trajectory_Augmentation/libero2lerobot/logs/2026-06-16_01-53-48_sttmq', fs=<fsspec.implementations.local.LocalFileSystem object at 0x733b117cf220>)",
+    "skip_completed": true,
+    "randomize_start_duration": 0,
+    "tasks": 10,
+    "workers": 10,
+    "start_method": "forkserver",
+    "local_tasks": 10,
+    "local_rank_offset": 0,
+    "depends": null,
+    "_launched": true,
+    "world_size": 10
+}

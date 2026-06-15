@@ -53,9 +53,24 @@ The repository was migrated from an older project (`SGVLA-Export`) that operated
 ### Current Status
 **Validation is PASSING**. The dynamic loading methodology achieves a reconstruction error of exactly **~1.87%**, perfectly aligning with the "properly right" baseline from the original `SGVLA-Export` reference.
 
-## 4. Repository Structure
+## 4. Dataset Migration (LeRobot v3.0)
 
-- `scripts/`: Contains the correct, dynamic scripts for `libero_goal`.
+We have successfully migrated the custom augmented LIBERO datasets to the official HuggingFace LeRobot v3.0 format (`.parquet` and AV1-encoded `.mp4` video chunks). This ensures full compatibility natively with `lerobot_train` without requiring custom schema patching or dataloaders.
+
+### Conversions Performed
+- `libero_goal`
+- `libero_object`
+- `libero_spatial`
+
+All converted formats reside in `/home/dhruv/Trajectory_Augmentation/data/lerobot_format/`.
+
+### Conversion Pipeline
+The `libero_to_lerobot/` directory contains the community-supported `generic_converter` and `libero2lerobot` tools. The pipeline uses `datatrove` to multiprocess episodes and automatically outputs correct LeRobot Dataset schemas (with dimensions fixed natively to `128x128x3`).
+
+## 5. Repository Structure
+
+- `scripts/`: Contains the correct, dynamic scripts for running inverse validation on the augmented data.
 - `SGVLA-Export/`: The untouched reference implementation from the previous project.
 - `report_mds/`: Output directory where metrics, statistics, and visual histograms are saved after running the simulator tests.
 - `third_party/`: Contains the forked LIBERO source code.
+- `libero_to_lerobot/`: Contains the official datatrove-based converter to output LeRobot v3.0 formatted datasets.

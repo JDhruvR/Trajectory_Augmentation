@@ -3,13 +3,18 @@ import subprocess
 import time
 
 SUITES = [
-    "libero_spatial",
-    "libero_goal"
+    "libero_object",
+    "libero_10"
 ]
 
 # # to be done later:
 #     "libero_object",
 #     "libero_10"
+
+# done
+# "libero_spatial",
+#     "libero_goal"
+
 
 BASE_TARGET_DIR = "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets"
 BASE_OUTPUT_DIR = "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented"

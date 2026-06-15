@@ -1,2 +1,4 @@
 data/
-VLA-Export
+VLA-Export/
+outputs/
+third_party/lerobot/
