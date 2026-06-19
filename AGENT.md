@@ -2,6 +2,7 @@
 
 Use Conda environments. Do not change anything system-wide, only install or edit files inside our environment so we can purge and restart easily.
 Please use `conda activate qwen-vla` for all project work.
+**Rule:** Always run large, long-running scripts (like training or benchmarking) inside a `tmux` session so they are persistent and easy to monitor!
 
 ## File Tracking Rules
 

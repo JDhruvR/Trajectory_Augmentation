@@ -33,8 +33,15 @@ The primary objective of this session was to convert custom augmented LIBERO HDF
 
 *   `data/lerobot_format/`: The official, fully functional LeRobot v3.0 datasets.
 *   `libero_to_lerobot/`: The `datatrove` multiprocessing pipeline scripts used for the dataset migration.
-*   `scripts/`: Contains the correct, dynamic scripts for running inverse validation on the augmented data.
-*   `third_party/`: Contains the forked LIBERO source code.
+*   `scripts/`: Contains the correct, dynamic scripts for running inverse validation on the augmented data and the custom orchestrators (`benchmark_libero_pro.py`).
+*   `third_party/`: Contains the forked LIBERO source code and local `lerobot` dependencies.
+
+## Recent Context & Benchmarking (Phase 2)
+After the data was converted and models were trained, we pivoted to **Robustness Evaluation** using the `LIBERO-PRO` suite to test OOD generalizability.
+- We completely isolated the `qwen-vla` conda environment, pinning `lerobot v0.4.4` natively to avoid Python 3.12 syntax crashes in later versions.
+- We generated and locked over 500 static `_env` BDDL states simulating Camera, Light, and Noise perturbations.
+- A long-running evaluation script (`benchmark_libero_pro.py`) is currently orchestrating a multi-hour benchmark across the Baseline model and the 20k checkpoint inside a persistent `tmux` session named `benchmark`.
+- The orchestrator specifically executes single-task loop batching to avoid crippling GPU OOM crashes caused by `lerobot_eval`'s default parallel vector instantiation.
 
 ## Next Steps for Future Agents
-The repository is perfectly clean and the data is formally structured. The user is now fully ready to focus on **downstream training, evaluation, and scaling experiments** using the generated `LeRobotDataset`s.
+The repository is perfectly clean, emojis have been purged from stdout code, and the data is formally structured. The `benchmark` tmux session is currently crunching through the LIBERO-PRO physics scenarios. The user will be analyzing the resultant Markdown comparison tables upon completion!
