@@ -7,7 +7,7 @@
 - **Institute/College Name** - *International Institute of Information Technology Bangalore (IIIT B)*, *26/C, Hosur Rd, Electronic City Phase I, Electronic City, Konappana Agrahara, Karnataka 560100*
 - **Final Presentation Google Drive Link** - 
 - **Full Submission Demo Video Link** - 
-- **Setup & Result Reproducibility Video Link** - 
+- **Setup & Result Reproducibility Video Link** - https://youtu.be/t5jbTETiGAY
 ### Project Artefacts
 
 - **Technical Documentation** - Create a **docs** folder and add all technical details in markdown files inside this folder explaining the project Technical Stack, List of OSS libraries/projects used along with their links, the technical architecture of your solution, implementation details, installation instructions, user guide, salient features of the projects. Kindly add screenshots wherever possible. - Done, find it at `docs/`
