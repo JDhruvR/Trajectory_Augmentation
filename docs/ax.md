@@ -2,7 +2,7 @@
 
 ## Our Agentic Setup
 
-We relied heavily on AI coding assistants to accelerate development. The two main tools we used were:
+We relied heavily on AI coding assistants to accelerate development. As the intelligence engine for our agentic coding setup, we primarily used **Gemini 3.1 Pro (High)** and **Claude Opus 4.6 (with thinking)**. The two main agentic interfaces we used were:
 
 - **Antigravity:** This was our primary coding agent. We used it for pretty much everything — writing Python scripts, debugging MuJoCo physics errors, parsing stack traces, restructuring the repository, and even running batch dataset conversions. It could chain together terminal commands, read files, and iterate on code autonomously.
 - **AlphaXiv:** We used this early on for reading and extracting key ideas from research papers related to trajectory augmentation and VLA architectures.
