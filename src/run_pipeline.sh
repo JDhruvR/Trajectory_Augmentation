@@ -8,7 +8,7 @@ echo ""
 
 # Configuration
 CONDA_ENV="traj_aug"
-BASE_DIR="/home/dhruv/Trajectory_Augmentation"
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PYTHON_CMD="python"
 
 # Ensure we're in the right directory

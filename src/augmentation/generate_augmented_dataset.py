@@ -18,7 +18,7 @@ import traceback
 import copy
 import robosuite.utils.transform_utils as T
 
-LIBERO_REPO = Path("/home/dhruv/Trajectory_Augmentation/src/third_party/LIBERO")
+LIBERO_REPO = Path(__file__).resolve().parent.parent / "third_party" / "LIBERO"
 if str(LIBERO_REPO) not in sys.path:
     sys.path.insert(0, str(LIBERO_REPO))
 
@@ -185,8 +185,9 @@ def process_task(task_file, output_dir, num_augmentations=5):
 def main():
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--target_dir", type=str, default="/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets/libero_goal")
-    parser.add_argument("--output_dir", type=str, default="/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented/libero_goal")
+    default_base = str(Path(__file__).resolve().parent.parent.parent)
+    parser.add_argument("--target_dir", type=str, default=f"{default_base}/data/LIBERO-datasets/libero_goal")
+    parser.add_argument("--output_dir", type=str, default=f"{default_base}/data/LIBERO-datasets-augmented/libero_goal")
     parser.add_argument("--num_augmentations", type=int, default=2)
     parser.add_argument("--test_single", action="store_true", help="Run only on a single file for testing")
     args = parser.parse_args()

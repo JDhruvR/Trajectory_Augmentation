@@ -12,8 +12,9 @@ SUITES = [
     "libero_object"
 ]
 
-BASE_TARGET_DIR = "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets"
-BASE_OUTPUT_DIR = "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented"
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+BASE_TARGET_DIR = os.path.join(BASE_DIR, "data", "LIBERO-datasets")
+BASE_OUTPUT_DIR = os.path.join(BASE_DIR, "data", "LIBERO-datasets-augmented")
 
 def main():
     print("Starting massive parallel dataset augmentation for all LIBERO suites...")
