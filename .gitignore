@@ -5,19 +5,29 @@ outputs/
 # Legacy directories
 VLA-Export/
 
-# Third-party dependencies (install via requirements.txt)
-third_party/
+# Top-level third_party (only root-level, not src/third_party)
+/third_party/
 
 # Python bytecode
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
 
 # IDE and OS
 .vscode/
 .idea/
 *.swp
 .DS_Store
+Thumbs.db
 
-# Logs
+# Logs and temp files
 *.log
+
+# Scratch scripts
+do_commits.sh
+
+# Conda/pip
+*.egg-info/
+dist/
+build/
