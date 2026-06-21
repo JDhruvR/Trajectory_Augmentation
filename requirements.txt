@@ -93,11 +93,11 @@ kiwisolver==1.5.0
 -e git+https://github.com/facebookresearch/LA-MCTS.git@605e335b9385cb0bdb78a5e0a7f11ea9f71a63bb#egg=LA_MCTS
 lazy-loader==0.5
 # Editable install with no version control (lerobot==0.4.4)
--e /home/dhruv/Trajectory_Augmentation/third_party/lerobot
+-e ./src/third_party/lerobot
 libclang==18.1.1
-libero @ file:///home/dhruv/Trajectory_Augmentation/third_party/lerobot-libero-pro
+-e ./src/third_party/LIBERO
 # Editable install with no version control (libero-to-Lerobot==0.1.0)
--e /home/dhruv/Trajectory_Augmentation/libero-to-Lerobot
+-e ./src/libero_to_lerobot
 linear_operator==0.6.1
 llvmlite==0.47.0
 loguru==0.7.3
@@ -247,7 +247,7 @@ typing_extensions==4.15.0
 tzdata==2026.2
 urllib3==2.6.3
 uv==0.8.19
-Wand @ file:///home/conda/feedstock_root/build_artifacts/wand_1661205278277/work
+Wand
 wandb==0.24.2
 wcwidth==0.8.1
 Werkzeug==3.1.8
