@@ -8,7 +8,7 @@
 - **Final Presentation Google Drive Link** - 
 - **Full Submission Demo Video Link** - 
 - **Setup & Result Reproducibility Video Link** - https://youtu.be/t5jbTETiGAY
-- The reproducibility video was shot using a screenshare but the fast moving frames in the IDE were not able to be captured because of lower-end device. We have saved the maximum output that we could of the terminal that was being run during the reproducibility. 
+- Note: The reproducibility video was shot using a screenshare but the fast moving frames in the IDE were not able to be captured because of lower-end device. We have saved the maximum output that we could of the terminal that was being run during the reproducibility. 
 
 ### Project Artefacts
 
@@ -37,7 +37,7 @@ To ensure reproducibility of results and to verify the presented KPIs, we requir
 - Execution of all required codes to train the developed models (if any)
 - Execution of all evaluation codes to reproduce the presented results/KPIs 
 
-- The video can be found here - https://youtu.be/t5jbTETiGAY
+The video can be found here - https://youtu.be/t5jbTETiGAY
 
 ### Attribution 
 
