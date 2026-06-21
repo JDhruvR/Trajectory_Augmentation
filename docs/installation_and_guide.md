@@ -33,7 +33,20 @@ pip install -r requirements.txt
 
 ---
 
-## 2. Running the End-to-End Pipeline
+## 2. Acquiring the Raw LIBERO Datasets
+
+Before augmenting the trajectories, you must download the raw expert demonstrations. Our bundled LIBERO codebase provides an automated script to fetch these directly from Hugging Face into your `data/` folder.
+
+```bash
+python src/third_party/LIBERO/benchmark_scripts/download_libero_datasets.py \
+    --download-dir data/LIBERO-datasets \
+    --datasets all \
+    --use-huggingface
+```
+
+---
+
+## 3. Running the End-to-End Pipeline
 
 We have created a unified script (`run_pipeline.sh`) that automates the entire process:
 1. It simulates the MuJoCo environments for `libero_goal`, `libero_spatial`, and `libero_object`.
@@ -57,7 +70,7 @@ It runs completely headless using `MUJOCO_GL=egl`.
 
 ---
 
-## 3. Directory Outputs
+## 4. Directory Outputs
 
 After the script finishes successfully, you will find the results located at:
 
@@ -72,7 +85,7 @@ Trajectory_Augmentation/
             └── libero_spatial
 ```
 
-## 4. Usage in Training
+## 5. Usage in Training
 
 You can immediately load the output into the Hugging Face ecosystem using the `LeRobotDataset` API natively:
 
