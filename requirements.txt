@@ -92,7 +92,8 @@ keras==3.12.1
 kiwisolver==1.5.0
 -e git+https://github.com/facebookresearch/LA-MCTS.git@605e335b9385cb0bdb78a5e0a7f11ea9f71a63bb#egg=LA_MCTS
 lazy-loader==0.5
--e git+https://github.com/huggingface/lerobot.git@8fff0fde7c79f23a93d845d1a50e985de01f8b8a#egg=lerobot
+# Editable install with no version control (lerobot==0.4.4)
+-e /home/dhruv/Trajectory_Augmentation/third_party/lerobot
 libclang==18.1.1
 libero @ file:///home/dhruv/Trajectory_Augmentation/third_party/lerobot-libero-pro
 # Editable install with no version control (libero-to-Lerobot==0.1.0)

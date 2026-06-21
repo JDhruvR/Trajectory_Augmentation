@@ -1,64 +1,86 @@
-# Installation and User Guide
+# Installation & Usage Guide
 
-## Salient Features
-The Trajectory Augmentation project introduces several key features over standard imitation learning pipelines:
-- **Zero-Shot Robustness**: Automatically synthesizes complex out-of-distribution state recoveries without requiring human teleoperation for corrections.
-- **LeRobot v3.0 Native**: Full end-to-end integration with Hugging Face's LeRobot format, outputting extremely dense `SVT-AV1` video chunks and parquets.
-- **Orientation Auto-Correction**: Completely fixes the underlying upside-down/mirrored OpenGL simulation artifacts dynamically during dataset generation, ensuring human-natural validation data.
-- **Multi-Suite Unification**: Custom `libero_h5.py` generic converters capable of safely normalizing disjointed schemas (`libero_goal`, `libero_object`, `libero_spatial`) into a monolithic, scalable hub repository.
+This document details the exact steps required to replicate our entire environment, run the trajectory augmentation pipeline, and generate the final Hugging Face LeRobot dataset.
 
-## Installation Instructions
+## System Requirements
+- OS: Linux (Ubuntu 20.04+ recommended)
+- GPU: NVIDIA GPU with CUDA support (required for MuJoCo EGL rendering and LeRobot video compression).
+- Storage: ~50GB free space for generating the full augmented datasets across all suites.
+- Memory: 32GB+ RAM.
 
-1. **Clone Repository & Setup Environment**
-   It is highly recommended to use the generated `requirements.txt` inside a fresh Conda environment (Python 3.10 is required for Qwen-VLA compatibility).
-   ```bash
-   conda create -n qwen-vla python=3.10
-   conda activate qwen-vla
-   ```
+---
 
-2. **Install Dependencies**
-   Install the exact packages utilized during generation:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## 1. Environment Setup
 
-3. **Install LIBERO & Robosuite**
-   Ensure that the MuJoCo physics engine and the custom Robosuite/LIBERO environments are placed in your `third_party` directory and added to your `PYTHONPATH`.
-   ```bash
-   export PYTHONPATH=$PYTHONPATH:/path/to/src/third_party/LIBERO
-   ```
+We recommend using `conda` or `mamba` to create the isolated environment. The exact dependencies from our working setup have been frozen in `requirements.txt`.
 
-## User Guide
-
-### 1. Generating Augmented Trajectories (HDF5)
-To generate the raw, augmented trajectories in `.hdf5` format with native 180-degree rotation correction, utilize the main runner script. You can run this in the background using `tmux`.
-
+### Clone the Repository
 ```bash
-python src/generate_augmented_dataset.py \
-    --target_dir data/LIBERO-datasets/libero_goal \
-    --output_dir data/LIBERO-datasets-augmented/libero_goal \
-    --num_augmentations 5
-```
-*Note: Due to the intensive nature of physics simulation, this script spawns multiple CPU workers. It is expected to take 15-30 minutes per suite depending on core count.*
-
-### 2. LeRobot Format Conversion
-Once the HDF5s are generated, convert them into the highly-compressed Hugging Face dataset format.
-```bash
-export SVT_LOG=1
-export HF_DATASETS_DISABLE_PROGRESS_BARS=TRUE
-export HDF5_USE_FILE_LOCKING=FALSE
-
-python src/libero_to_lerobot/libero2lerobot/libero_h5.py \
-    --src-paths data/LIBERO-datasets-augmented/libero_goal \
-    --output-path data/lerobot_format/hf_upload_repo/libero_goal \
-    --executor local \
-    --tasks-per-job 3 \
-    --workers 10
+git clone https://github.com/JDhruvR/Trajectory_Augmentation.git
+cd Trajectory_Augmentation
 ```
 
-### 3. Pushing to Hugging Face
-Once the dataset structure is built locally in `hf_upload_repo`, you can push the dataset sequentially to Hugging Face using the CLI:
+### Create the Conda Environment
 ```bash
-huggingface-cli upload your-username/libero_trajectory_augmented data/lerobot_format/hf_upload_repo . --repo-type dataset
+conda create -n traj_aug python=3.10 -y
+conda activate traj_aug
 ```
 
+### Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 2. Running the End-to-End Pipeline
+
+We have created a unified script (`run_pipeline.sh`) that automates the entire process:
+1. It simulates the MuJoCo environments for `libero_goal`, `libero_spatial`, and `libero_object`.
+2. It extracts the original trajectories and injects 6D inverse-kinematics noise right before the critical grasp action.
+3. It generates `2` new augmented HDF5 trajectories for every `1` original expert demonstration.
+4. It passes the resulting augmented HDF5 files to the datatrove-based LeRobot converter, mapping the LIBERO state vector to an 8D OpenCV-compliant schema.
+5. It compresses the image streams using SVT-AV1 and outputs the final parquet format.
+
+### Execution
+Run the pipeline directly from the root of the repository:
+
+```bash
+conda activate traj_aug
+bash run_pipeline.sh
+```
+
+**Note on Execution Time:**
+Depending on your CPU core count and GPU capabilities, the full suite augmentation may take several hours. The script utilizes multiprocessing internally to max out the CPU. 
+
+It runs completely headless using `MUJOCO_GL=egl`.
+
+---
+
+## 3. Directory Outputs
+
+After the script finishes successfully, you will find the results located at:
+
+```
+Trajectory_Augmentation/
+└── data/
+    ├── LIBERO-datasets-augmented/    # Raw generated HDF5 files (Robosuite/LIBERO native)
+    └── lerobot_format/               # The final Hugging Face v3.0 formatted dataset
+        └── libero_trajectory_augmented/
+            ├── libero_goal
+            ├── libero_object
+            └── libero_spatial
+```
+
+## 4. Usage in Training
+
+You can immediately load the output into the Hugging Face ecosystem using the `LeRobotDataset` API natively:
+
+```python
+from lerobot.common.datasets.lerobot_dataset import LeRobotDataset
+
+# Path to the local generated folder
+dataset = LeRobotDataset("JDhruvR/libero_trajectory_augmented/libero_goal", local_files_only=True)
+
+# You can now pass this directly into the SmolVLA or Act configs for training!
+```

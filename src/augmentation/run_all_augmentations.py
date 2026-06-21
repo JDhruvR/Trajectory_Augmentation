@@ -40,7 +40,7 @@ def main():
         cmd = [
             "/home/dhruv/miniforge3/envs/qwen-vla/bin/python",
             "-u",
-            "scripts/generate_augmented_dataset.py",
+            "src/augmentation/generate_augmented_dataset.py",
             "--target_dir", target_dir,
             "--output_dir", output_dir,
             "--num_augmentations", "3"
