@@ -38,3 +38,6 @@ To ensure reproducibility of results and to verify the presented KPIs, we requir
 ### Attribution 
 
 In case this project is built on top of an existing open source project, please provide the original project link here. Also, mention what new features were developed. Failing to attribute the source projects may lead to disqualification during the time of evaluation.
+
+### Acknowledgements
+This work was supported by the 3D Vision and Language Lab, IIIT-Bangalore. We extend our gratitude for their guidance and support throughout the developement of this project. 

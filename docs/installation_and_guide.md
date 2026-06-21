@@ -47,7 +47,7 @@ Run the pipeline directly from the root of the repository:
 
 ```bash
 conda activate traj_aug
-bash run_pipeline.sh
+bash src/run_pipeline.sh
 ```
 
 **Note on Execution Time:**

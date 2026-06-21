@@ -33,13 +33,14 @@ def main():
         
         # We run the command synchronously. Since generate_augmented_dataset.py uses 
         # multiprocessing internally to max out the CPU for each suite, we process one suite at a time.
+        import sys
         cmd = [
-            "/home/dhruv/miniforge3/envs/qwen-vla/bin/python",
+            sys.executable,
             "-u",
             "src/augmentation/generate_augmented_dataset.py",
             "--target_dir", target_dir,
             "--output_dir", output_dir,
-            "--num_augmentations", "3"
+            "--num_augmentations", "2"
         ]
         
         # Pass EGL environment variables for headless rendering

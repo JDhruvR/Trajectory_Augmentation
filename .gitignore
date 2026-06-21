@@ -31,3 +31,4 @@ do_commits.sh
 *.egg-info/
 dist/
 build/
+logs/
