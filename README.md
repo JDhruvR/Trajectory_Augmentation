@@ -37,9 +37,20 @@ To ensure reproducibility of results and to verify the presented KPIs, we requir
 - Execution of all required codes to train the developed models (if any)
 - Execution of all evaluation codes to reproduce the presented results/KPIs 
 
+- The video can be found here - https://youtu.be/t5jbTETiGAY
+
 ### Attribution 
 
-In case this project is built on top of an existing open source project, please provide the original project link here. Also, mention what new features were developed. Failing to attribute the source projects may lead to disqualification during the time of evaluation.
+This project builds upon the foundations of several incredible open-source robotics and dataset ecosystems. We have directly utilized code, libraries, and datasets from the following repositories:
+
+- LIBERO Benchmark: We utilized the LIBERO codebase for the underlying environment task definitions and the expert HDF5 demonstrations (Hugging Face Datasets).
+Original Paper: arXiv:2306.03310
+
+- Hugging Face LeRobot: We utilized the LeRobot ecosystem as the standard schema for Vision-Language-Action (VLA) models and relied on their v3.0 dataset documentation for formatting rules.
+
+- Robosuite: We utilized Robosuite as the underlying MuJoCo physics engine to roll out and render the robotic environments.
+
+- LIBERO-to-LeRobot Converters: We adapted scripts to facilitate the complex state-space mapping from native LIBERO format to the Hugging Face v3.0 schema. Code was referenced and adapted from community converters, including Tavish9/any4lerobot and sainavaneet/libero-to-Lerobot.
 
 ### Acknowledgements
 This work was supported by the 3D Vision and Language Lab, IIIT-Bangalore. We extend our gratitude for their guidance and support throughout the developement of this project. 
