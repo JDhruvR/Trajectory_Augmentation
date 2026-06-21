@@ -1,45 +1,60 @@
-# Agentic Integration Retrospective
+# Agentic AI Usage & Integration
 
-This document outlines the specialized agentic toolchain, AI models, and explicit workflows utilized to architect and build this project. It serves as a retrospective specifically focused on the efficacy of **agentic programming**—detailing what succeeded in agent usage, what failed in the agent's behavior, and how developer controls guided the AI outputs.
+## Our Agentic Setup
 
-## Agentic Coding Assistants
+We relied heavily on AI coding assistants to accelerate development. The two main tools we used were:
 
-- **Antigravity / OpenCode:** Served as the primary execution engine for this project. Antigravity was utilized for general coding, rapid iteration, log analysis, and system architecture. Its ability to autonomously read stack traces, formulate implementation plans, and chain bash commands allowed for sweeping directory restructures and complex Python debugging.
-- **AlphaXiv:** Utilized extensively during the early phases for AI-assisted paper review and evidence extraction.
+- **Antigravity:** This was our primary coding agent. We used it for pretty much everything — writing Python scripts, debugging MuJoCo physics errors, parsing stack traces, restructuring the repository, and even running batch dataset conversions. It could chain together terminal commands, read files, and iterate on code autonomously.
+- **AlphaXiv:** We used this early on for reading and extracting key ideas from research papers related to trajectory augmentation and VLA architectures.
 
 ## Reasoning & Planning Pipelines
 
-Our agentic setup relied heavily on a **"Plan-Then-Execute"** pipeline. 
-Before executing destructive actions, the agent generated a structured `implementation_plan.md` artifact. This plan forced the agent to halt, synthesize its context, state its exact intended commands, and wait for human review. This ensured that the developer retained absolute control over the high-level architecture while the agent handled the low-level syntax.
+The most useful pattern we discovered was the **Plan-Then-Execute** workflow. Before making any major changes (like restructuring the dataset pipeline or rewriting the augmentation logic), we'd have the agent generate a structured `implementation_plan.md` first. This forced it to stop, think through the full plan, and wait for our approval before touching any code.
 
-## Agent Skills Profile (github.com/mattpocock/skills)
+This was genuinely helpful because without it, the agent would sometimes jump straight into implementing something and go down a wrong path. Having that planning checkpoint saved us a lot of time.
 
-The agent’s behavioral constraints were influenced by several critical specialized skills:
+The Antigravity IDE also generates walkthroughs and artefects 
 
-1. **`grill-with-docs`:** Essential for aligning the agent and the developer. This skill forced the agent to build a shared vocabulary by recording structural logic and historical bugs into documentation before taking action.
-2. **`tdd` (Test-Driven Development):** Enforced a workflow where failing tests were identified first, prompting the agent to write exact exception handlers.
-3. **`improve-codebase-architecture`:** Used continually to force the agent to refactor scripts to keep them modular, avoiding monolithic files.
-4. **`zoom-out`:** Prevented the agent from applying narrow patches by prompting it to read interconnected scripts simultaneously to understand the data flow.
-5. **`caveman`:** A highly effective prompt-compression technique that stripped out conversational filler from the agent's internal thoughts and outputs, reducing context bloat by ~75%.
-6. **`grill-me`:** A devil’s advocate constraint where the agent was forced to question its own implementation plans to catch logic errors before executing.
-7. **`git-guardrails`:** Acted as a safety net against catastrophic data loss, enforcing explicit human approval before wiping datasets.
+## Agent Skills & Behavioral Controls
 
-## What Worked (Agent Usage)
+We configured the agent with several behavioral "skills" (from [mattpocock/skills](https://github.com/mattpocock/skills)) that shaped how it worked:
 
-- **Asynchronous Tool Chaining:** The agent successfully chained complex bash commands, such as writing background scripts that actively polled other processes and triggered sequential actions without human intervention.
-- **Dynamic Context Parsing:** The agent demonstrated a strong ability to autonomously parse large codebase architectures without explicit instruction, successfully reverse-engineering hidden schema mappings by searching through third-party source code.
-- **Plan-Then-Execute Hooks:** The automatic interception of dangerous commands via the planning phase ensured the developer was never blindsided by an AI action.
+1. **`grill-with-docs`:** Made the agent document its reasoning and record bugs/decisions before writing code. This was essential for keeping track of what was happening across sessions.
+2. **`tdd` (Test-Driven Development):** The agent would identify failing test cases first, then write targeted fixes. This worked really well for our inverse kinematics validation.
+3. **`improve-codebase-architecture`:** Pushed the agent to keep scripts modular instead of dumping everything into one giant file.
+4. **`zoom-out`:** Prevented the agent from tunnel-visioning on one file. It would read related scripts simultaneously to understand the full data flow before making changes.
+5. **`caveman`:** A prompt compression technique that cut down on verbose agent responses. Reduced context usage by roughly 75%, which was important when working on large codebases.
+6. **`grill-me`:** Forced the agent to question its own plans before executing. Caught a few logic errors this way.
+7. **`git-guardrails`:** Safety net that required explicit human approval before any destructive git operations (deleting datasets, force pushes, etc.).
 
-## What Did Not Work (Agent Usage)
 
-- **Background Execution Defaults:** The agent's native system defaults for running background commands frequently caused issues, either by hanging the session or failing to stream logs properly. The agent struggled to manage long-running processes natively.
-- **Over-eager Execution & Sycophancy:** The agent exhibited a strong tendency to over-correct and blindly agree with the user. When instructed to kill a specific process or delete a folder, the agent would sometimes repeatedly issue the exact same destructive commands in a sycophantic attempt to please the user, leading to redundant actions and wasted tokens.
-- **Context Loss on Complex Math:** The agent struggled to maintain the logic of mathematical operations (such as matrix rotations and image flipping) across multiple script files. When a mistake was made, the agent favored applying hacky post-hoc fixes (like FFmpeg patches) rather than tracking the error back to the root math function.
+## What Worked
 
-## Developer Control & Instruction Enforcement
+- **Asynchronous tool chaining:** The agent could write a script, run it in `tmux`, poll the output, and trigger the next step — all without me having to babysit each command. This was huge for the dataset conversion pipeline where we had to process ~4,500 trajectories.
+- **Dynamic codebase exploration:** When we switched from `libero_object` to `libero_goal` datasets, the agent independently discovered that the state dimensionality changed from 110 to 79 dimensions by searching through the LIBERO source code. I didn't have to point it to the right file.
+- **Plan-Then-Execute hooks:** Having the agent pause and show me its plan before executing was the single most valuable pattern. It caught bad ideas early.
+- **Stack trace parsing:** The agent was genuinely good at reading long MuJoCo/Robosuite error traces and pinpointing the root cause. This saved hours of manual debugging.
 
-To counteract the agent's behavioral flaws, the developer had to step in with aggressive and explicit enforcements:
+## What Did NOT Work
 
-1. **Enforcing `tmux`:** Because the agent's native background execution failed, the developer explicitly commanded the agent to create and utilize dedicated `tmux` environments (e.g., `upload`, `remake_dataset`). This forced the agent to decouple long-running physics simulations from the conversational shell, allowing the developer to safely attach to the session and monitor progress independently.
-2. **Anti-Sycophancy Constraints:** The developer had to heavily enforce anti-sycophancy prompts to stop the agent from repeatedly executing the same kill and delete commands. The agent had to be explicitly told to stop "band-aiding" issues and instead execute a clean slate protocol.
-3. **Strict "Zoom-Out" Enforcement:** When the agent attempted to patch broken video files, the developer explicitly overrode the agent, forcing it to drop its current logic, delete the corrupted data entirely, and rewrite the mathematical rotation directly at the core physics level. This interaction proved that while autonomous agents are incredibly fast, they still require firm, explicit human guardrails to ensure architectural integrity.
+- **Background execution was flaky:** The agent's built-in mechanism for running long commands in the background would frequently hang or fail to stream logs. I had to explicitly tell it to use `tmux` sessions every single time — it wouldn't default to this on its own.
+- **Sycophancy / over-eager execution:** This was probably the most frustrating issue. When I'd ask the agent to fix something, it would sometimes blindly agree and keep trying the same broken approach repeatedly. For example, when a process needed to be killed, it would issue the kill command over and over in a loop trying to "please" me instead of stepping back and diagnosing why the process wouldn't die. I had to add explicit anti-sycophancy rules to the agent instructions.
+- **Local instructions taken as global rules:** If I told the agent to do something specific for one situation — like "delete this folder" or "skip validation for this run" — it would sometimes internalize that as a general instruction and start doing it everywhere, even in completely unrelated contexts. A one-off command would suddenly become a recurring behavior, and I'd only notice when something downstream broke.
+- **Killing processes instead of reasoning:** There were times when I'd ask the agent "why are you doing this?" or "what's happening here?" just wanting an explanation and it would interpret my question as dissatisfaction and immediately kill the running process or undo its work. Instead of giving me a clear reasoning for its actions, it would treat my question as an implicit instruction to stop. This was really counterproductive.
+- **Forgetting explicit instructions across sessions:** Unless I wrote down recurring instructions in `AGENT.md`, the agent would forget them between sessions. Things like "always use `tmux`", "never delete the outputs folder", or "always run with `MUJOCO_GL=egl`" had to be told every single time until I put them in the agent file.
+- **Not auto-updating documentation:** The agent never proactively updated `HISTORY.md` or `TRACKING.md` after completing work. I had to explicitly tell it "now update the tracking doc with what you just did" every time. This made handoffs between sessions harder than they needed to be.
+- **Rabbit hole behavior:** This was a big one. The agent would sometimes latch onto one approach and just keep going deeper and deeper into it, even when it clearly wasn't working. For example, when fixing the image orientation issue, it spent a long time trying increasingly complex FFmpeg filter chains and post-processing hacks instead of stepping back and considering that the root cause might be in the rendering code itself. It couldn't "zoom out" on its own. I had to explicitly tell it to abandon its current approach and look at the problem from scratch. Agent was very reluctant to explore alternatives without explicit prompting.
+- **Math across files:** The agent really struggled with tracking mathematical operations (image rotations, matrix flips) across multiple scripts. When our rendered frames came out upside-down, the agent tried to fix it with an FFmpeg post-processing hack instead of tracing the bug back to the actual `np.flip()` call in the rendering function. I had to manually force it to "zoom out" and fix the root cause. This is mainly because many of the coding agents still do not have the capabilities to ingest image media. And in this case it was needed to compare this to other images from other reference which it did not think about or had the capability to do.
+- **Context loss on long sessions:** After many back-and-forth exchanges, the agent would sometimes forget earlier decisions or re-introduce bugs that we'd already fixed. The `AGENT.md` and `TRACKING.md` files helped mitigate this, but it was still an issue.
+
+## How I Managed the Agent
+
+Since the agent wasn't perfect, I had to step in with explicit controls:
+
+1. **Enforcing `tmux`:** I made it a rule in `AGENT.md` that all long-running scripts (physics simulations, dataset conversions) must run inside dedicated `tmux` sessions. This let me detach from the agent conversation and monitor progress independently.
+2. **Anti-sycophancy prompts:** I added explicit instructions telling the agent to stop repeating failed commands and instead do a clean restart when something was broken. Without this, it would waste tokens retrying the same thing.
+3. **"Zoom-out" overrides:** When the agent was band-aiding a video rendering bug with FFmpeg filters, I overrode it and forced it to delete all the corrupted outputs, go back to the physics rendering code, and fix the rotation math at the source. Agents are fast, but they need firm human direction for architectural decisions.
+
+## Key Takeaway
+
+Agentic coding tools dramatically sped up our development. What would have taken us weeks of manual debugging and scripting was done in days. But they're not autonomous. The best results came from treating the agent as a very fast junior engineer: great at execution, but needs clear direction, guardrails, and regular check-ins to stay on track.
