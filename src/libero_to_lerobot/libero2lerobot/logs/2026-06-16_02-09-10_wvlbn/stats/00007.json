@@ -1,0 +1,21 @@
+[
+    {
+        "name": "None: Save Temp LeRobotDataset",
+        "time_stats": {
+            "total": 730.3462356373202,
+            "n": 150,
+            "mean": 4.868974904248799,
+            "variance": 5.603343919310824,
+            "std_dev": 2.3671383397070023,
+            "min": 1.4355939599918202,
+            "max": 10.81487304402981,
+            "unit": "saving episode",
+            "total_human": "12 minutes and 10.35 seconds",
+            "mean_human": "4 seconds and 868.98 milliseconds",
+            "std_dev_human": "2 seconds and 367.14 milliseconds",
+            "min_human": "1 second and 435.59 milliseconds",
+            "max_human": "10 seconds and 814.87 milliseconds"
+        },
+        "stats": {}
+    }
+]
