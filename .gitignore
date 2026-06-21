@@ -1,4 +1,23 @@
+# Data and model artifacts
 data/
-VLA-Export/
 outputs/
-third_party/lerobot/
+
+# Legacy directories
+VLA-Export/
+
+# Third-party dependencies (install via requirements.txt)
+third_party/
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE and OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Logs
+*.log
