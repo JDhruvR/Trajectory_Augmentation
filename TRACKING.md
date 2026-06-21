@@ -27,12 +27,12 @@ We validate the inverse actions by applying the reverse action physically in a M
 
 ### Run Single Demonstration Test
 ```bash
-MUJOCO_GL=egl EGL_DEVICE_ID=0 conda run -n qwen-vla python scripts/test_inverse_action_simulator.py
+MUJOCO_GL=egl EGL_DEVICE_ID=0 conda run -n qwen-vla python src/test_inverse_kinematics.py
 ```
 
 ### Run Batch Validation (across multiple demos)
 ```bash
-MUJOCO_GL=egl EGL_DEVICE_ID=0 conda run -n qwen-vla python scripts/test_inverse_action_batch.py
+MUJOCO_GL=egl EGL_DEVICE_ID=0 conda run -n qwen-vla python src/test_inverse_kinematics.py
 ```
 
 ## 3. Dataset Compatibility Notes & Learnings
@@ -55,7 +55,7 @@ The repository was migrated from an older project (`SGVLA-Export`) that operated
 
 ## 4. Dataset Migration (LeRobot v3.0)
 
-We have successfully migrated the custom augmented LIBERO datasets to the official HuggingFace LeRobot v3.0 format (`.parquet` and AV1-encoded `.mp4` video chunks). This ensures full compatibility natively with `lerobot_train` without requiring custom schema patching or dataloaders.
+We have successfully migrated the custom augmented LIBERO datasets to the official HuggingFace LeRobot v3.0 format (`.parquet` and AV1-encoded `.mp4` video chunks).
 
 ### Conversions Performed
 - `libero_goal`
@@ -69,8 +69,8 @@ The `libero_to_lerobot/` directory contains the community-supported `generic_con
 
 ## 5. Repository Structure
 
-- `scripts/`: Contains the correct, dynamic scripts for running inverse validation on the augmented data.
+- `src/`: Contains all core Python code. This includes the consolidated test scripts for inverse kinematics and the logic to build augmented datasets.
+- `src/report_mds/`: Output directory where metrics, statistics, and visual histograms are saved after running the simulator tests.
+- `src/third_party/`: Contains the forked LIBERO source code.
+- `src/libero_to_lerobot/`: Contains the official datatrove-based converter to output LeRobot v3.0 formatted datasets.
 - `SGVLA-Export/`: The untouched reference implementation from the previous project.
-- `report_mds/`: Output directory where metrics, statistics, and visual histograms are saved after running the simulator tests.
-- `third_party/`: Contains the forked LIBERO source code.
-- `libero_to_lerobot/`: Contains the official datatrove-based converter to output LeRobot v3.0 formatted datasets.

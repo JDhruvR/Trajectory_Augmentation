@@ -13,7 +13,7 @@
 
 - **Technical Documentation** - Create a **docs** folder and add all technical details in markdown files inside this folder explaining the project Technical Stack, List of OSS libraries/projects used along with their links, the technical architecture of your solution, implementation details, installation instructions, user guide, salient features of the projects. Kindly add screenshots wherever possible.
 - **[Important]** Create a file `docs/ax.md` whiere you explain in detail how you utilizes open weight models and/or agentic development tools to implement your solution. Explain in detail your  Agentic AI setup , Agentic workflows, Reasoning & planning pipelines, Tool use / tool chaining, Coding assistants, agents, harness, MCP servers, agents.md, skills, Memory / context handling, Multi-agent orchestration systems, etc. Please highlight from your experience - what worked and **what did not work**.
-- **Source Code** - Create a **src** folder and add all developed project source codes (including training & benchmark evaluation codes) in the repo. The code must be capable of being successfully installed/executed and must run consistently on the intended platforms.
+- **Source Code** - Create a **src** folder and add all developed project source codes in the repo. The code must be capable of being successfully installed/executed and must run consistently on the intended platforms.
 - **Models Used** - *(Hugging Face links to all models used in the project. You are permitted to use only open weight models.)*
 - **Models Published** - *(In case you have developed a model as a part of your solution, kindly upload it on Hugging Face under appropriate open source license and add the link here.)*
 - **Datasets Used** - *(Links to all datasets used in the project. You are permitted to use publicly available datasets under licenses like Creative Commons, Open Data Commons, or equivalent.)*
@@ -32,8 +32,8 @@ Create a high quality video demonstration your solution in real life and showcas
 To ensure reproducibility of results and to verify the presented KPIs, we require you to create a video demonstrating:
 - Step by step project installation,
 - Data/model download steps, 
-- Execution of all required codes to train the developed models (if any)
-- Execution of all evaluation codes to reproduce the presented results/KPIs 
+- Execution of all required codes to verify the generated dataset schemas
+- Execution of all evaluation metrics/scripts to reproduce the presented dataset generation results
 
 ### Attribution 
 

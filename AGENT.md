@@ -4,6 +4,11 @@ Use Conda environments. Do not change anything system-wide, only install or edit
 Please use `conda activate qwen-vla` for all project work.
 **Rule:** Always run large, long-running scripts (like training or benchmarking) inside a `tmux` session so they are persistent and easy to monitor!
 
+## Strict Execution Rules
+
+1. **Never Kill Processes:** Do NOT ever kill a running process, terminal, or `tmux` session unless explicitly commanded or granted permission by the user. Always ask first.
+2. **Never Delete Outputs:** Do NOT ever delete the `outputs/` directory or any files/folders inside of it. Evaluation and training data retention is strictly enforced.
+
 ## File Tracking Rules
 
 - **Always track:** code files (.py), configs (.yaml, .toml), docs (.md, .tex), Makefile, .gitignore
