@@ -8,6 +8,8 @@
 - **Final Presentation Google Drive Link** - 
 - **Full Submission Demo Video Link** - 
 - **Setup & Result Reproducibility Video Link** - https://youtu.be/t5jbTETiGAY
+- The reproducibility video was shot using a screenshare but the fast moving frames in the IDE were not able to be captured because of lower-end device. We have saved the maximum output that we could of the terminal that was being run during the reproducibility. 
+
 ### Project Artefacts
 
 - **Technical Documentation** - Create a **docs** folder and add all technical details in markdown files inside this folder explaining the project Technical Stack, List of OSS libraries/projects used along with their links, the technical architecture of your solution, implementation details, installation instructions, user guide, salient features of the projects. Kindly add screenshots wherever possible. - Done, find it at `docs/`
