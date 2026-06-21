@@ -90,14 +90,11 @@ jupyter_core==5.9.1
 jupytext==1.19.1
 keras==3.12.1
 kiwisolver==1.5.0
--e git+https://github.com/facebookresearch/LA-MCTS.git@605e335b9385cb0bdb78a5e0a7f11ea9f71a63bb#egg=LA_MCTS
-lazy-loader==0.5
 # Editable install with no version control (lerobot==0.4.4)
 -e ./src/third_party/lerobot
 libclang==18.1.1
 -e ./src/third_party/LIBERO
-# Editable install with no version control (libero-to-Lerobot==0.1.0)
--e ./src/libero_to_lerobot
+
 linear_operator==0.6.1
 llvmlite==0.47.0
 loguru==0.7.3
