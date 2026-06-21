@@ -1,20 +1,16 @@
+"""
+Orchestration script to run the trajectory augmentation pipeline 
+sequentially across multiple LIBERO suites.
+"""
 import os
 import subprocess
 import time
 
 SUITES = [
-    "libero_object",
-    "libero_10"
+    "libero_goal",
+    "libero_spatial",
+    "libero_object"
 ]
-
-# # to be done later:
-#     "libero_object",
-#     "libero_10"
-
-# done
-# "libero_spatial",
-#     "libero_goal"
-
 
 BASE_TARGET_DIR = "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets"
 BASE_OUTPUT_DIR = "/home/dhruv/Trajectory_Augmentation/data/LIBERO-datasets-augmented"

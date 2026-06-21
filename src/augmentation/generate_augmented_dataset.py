@@ -1,3 +1,11 @@
+"""
+Core multiprocessed pipeline for generating augmented datasets.
+
+This script parses the expert HDF5 demonstrations and dynamically 
+spawns headless MuJoCo environments across available CPU cores to 
+inject structured physical noise, forcing out-of-distribution 
+recovery behavior.
+"""
 import os
 import sys
 import glob
