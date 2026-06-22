@@ -8,7 +8,8 @@
 - **Final Presentation Google Drive Link** - https://drive.google.com/file/d/1mUA5i8B6y7bWLt_Lu_dnNAC5M6ztGBtl/view?usp=sharing
 
 Note: The PDF linked above is also uploaded to the repository.
-- **Full Submission Demo Video Link** - 
+- **Full Submission Demo Video Link** - https://youtu.be/TiQOQ-mVkQI
+
 - **Setup & Result Reproducibility Video Link** - https://youtu.be/t5jbTETiGAY
 
 Note: The reproducibility video was shot using a screenshare but the fast moving frames in the IDE were not able to be captured because of lower-end device. We have saved the maximum output that we could of the terminal that was being run during the reproducibility. 
@@ -34,11 +35,13 @@ Note: This can be found at `src/`
 
 Unlike Phase 1 presentation, in Phase 2 you can freely decide the template, flow and content of your technical presentation. Ensure you cover all aspects of your solution - innovation, novelty, architecture, open datasets/models developed and used, final deliverable details, KPIs of your solution, AI/Agent use, any other details. 
 
-Note: Please find the PDF for the final presentation in the link given at the start and the pdf is uploaded to the current repository as well. 
+Note: Please find the PDF for the final presentation in the link given above. The pdf is present in the this repository as well. 
 
 #### Full Submission Demo Video
 
 Create a high quality video demonstration your solution in real life and showcasing how it is actually solves the proposed AX Hackathon problem.
+
+Note: The demo video can be found here - https://youtu.be/TiQOQ-mVkQI
 
 #### Setup & Result Reproducibility Video
 
@@ -48,7 +51,7 @@ To ensure reproducibility of results and to verify the presented KPIs, we requir
 - Execution of all required codes to train the developed models (if any)
 - Execution of all evaluation codes to reproduce the presented results/KPIs 
 
-Note: The video can be found here - https://youtu.be/t5jbTETiGAY
+Note: The reproducibility video can be found here - https://youtu.be/t5jbTETiGAY
 
 ### Attribution 
 
